@@ -1,26 +1,37 @@
 <template>
 	<view class="content">
 		<navbar></navbar>
+		<tab :list="labelData"></tab>
 		<view v-for="i in 100" :key="i">第{{i}}行内容</view>
 	</view>
 </template>
 
 <script>
 	import navbar from "@/components/navbar/navbar.vue"
+	import tab from "@/components/tab/tab.vue"
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				title: 'Hello',
+				labelData: []
 			}
 		},
 		components:{
-			navbar
+			navbar,
+			tab
 		},
 		onLoad() {
-
+			this.getLabel()
 		},
 		methods: {
-
+			getLabel(){
+				// 调用云函数的方法
+				uniCloud.callFunction({
+					name:"get_label"
+				}).then((res)=>{
+					this.labelData = res.result.data;
+				})
+			}
 		}
 	}
 </script>
